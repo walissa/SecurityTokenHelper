@@ -22,7 +22,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper.Internal
     {
         private ConcurrentDictionary<Guid, TokenInfo> tokenDic = new ConcurrentDictionary<Guid, TokenInfo>();
         private System.Timers.Timer localTimer = new System.Timers.Timer(60000);
-        
+
 
         public TokenDictionary()
         {
@@ -52,16 +52,20 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper.Internal
             }
         }
 
-        internal TokenInfo GetOrCreateTokenInfo(Guid tokenId,int expiresIn)
+        internal TokenInfo GetOrCreateTokenInfo(Guid tokenId, int expiresIn)
         {
-            var ti = tokenDic.GetOrAdd(tokenId, k => new TokenInfo(tokenId,expiresIn));
+            var ti = tokenDic.GetOrAdd(tokenId, k => new TokenInfo(tokenId, expiresIn));
             localTimer.Enabled = true;
             return ti;
         }
 
-        internal static void WriteLogMessage(string message, System.Diagnostics.EventLogEntryType evType = System.Diagnostics.EventLogEntryType.Information, [CallerMemberName] string procName = "")
+        internal static void WriteLogMessage(string message, System.Diagnostics.EventLogEntryType evType = EventLogEntryType.Information, [CallerMemberName] string procName = "")
         {
-            System.Diagnostics.EventLog.WriteEntry("SecurityTokenHelper", string.Format("{0}\n{1}", procName, message), evType);
+            try
+            {
+                System.Diagnostics.EventLog.WriteEntry("SecurityTokenHelper", message, evType);
+            }
+            catch (Exception) { }
         }
 
     }

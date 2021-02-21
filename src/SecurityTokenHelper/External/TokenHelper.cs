@@ -122,19 +122,19 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
                     {
                         token = GetToken(method, url, headers, contentType, body, tokenPath);
                         ti.SetTokenInfo(token, DateTime.Now);
-                        TokenDictionary.WriteLogMessage($"Get new token for TokenId '{tokenId}'.");
+                        TokenDictionary.WriteLogMessage(message:$"Get new token for TokenId '{tokenId}'.",procName: "Cached Token");
                     }
                     else
                     {
                         token = ti.Token;
-                        TokenDictionary.WriteLogMessage($"Get token for TokenId '{tokenId}' from dictionary.");
+                        TokenDictionary.WriteLogMessage(message: $"Get token for TokenId '{tokenId}' from cache.",procName: "Cached Token");
                     }
                 }
             }
             else
             {
                 token = GetToken(method, url, headers, contentType, body, tokenPath);
-                TokenDictionary.WriteLogMessage($"Get new token");
+                TokenDictionary.WriteLogMessage(message: $"Get new token", procName: "No Cache");
             }
             return token;
         }
