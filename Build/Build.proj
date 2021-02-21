@@ -1,10 +1,10 @@
 <Project DefaultTargets="GenerateMsi" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(BuildExtensionsPath)\BtsMsiTask\BtsMsiTask.targets" />
-  <Import Project="$(BuildExtensionsPath)\ExtensionPack\4.0\MSBuild.ExtensionPack.tasks"/>
+	<Import Project="$(MSBuildExtensionsPath1)\BtsMsiTask\BtsMsiTask.targets" />
+  <Import Project="$(MSBuildExtensionsPath1)\ExtensionPack\4.0\MSBuild.ExtensionPack.tasks"/>
   
 	<PropertyGroup>
 		<DestinationPath>$(build_artifactstagingdirectory)</DestinationPath>
-		<ApplicationName>BizTalkComponents.PipelineComponents.SetProperty</ApplicationName>
+		<ApplicationName>BizTalkComponents.WCFExtensions.SecurityTokenHelper</ApplicationName>
 	</PropertyGroup>
 	<ItemGroup>
 		<Resource Include="..\Src\SecurityTokenHelper\bin\$(Configuration)\BizTalkComponents.WCFExtensions.SecurityTokenHelper.dll" />
