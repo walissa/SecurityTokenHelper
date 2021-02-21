@@ -27,7 +27,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
                 headers.Add(m.Groups["Header"].Value, m.Groups["Value"].Value);
                 m = m.NextMatch();
             }
-            return new SecurityTokenHelperBehavior(AuthEndpoint, HttpMethod, headers, ContentType, Body, TokenPath, TokenKey, TokenPrefix, TokenSuffix, TokenUsage, TokenId, CacheToken,  TokenExpiresIn);
+            return new SecurityTokenHelperBehavior(AuthEndpoint, HttpMethod, headers, ContentType, Body, TokenPath, TokenKey, TokenPrefix, TokenSuffix, TokenUsage, TokenId, CacheToken, TokenExpiresIn);
         }
 
         [Category("Auth Url Info")]
@@ -99,7 +99,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
 
         [Category("Token Usage")]
         [Description("The token key, either in the header or in the query string, like 'Authorization' in the header, or 'token' in the query string")]
-        [ConfigurationProperty("TokenKey", IsRequired = false)]
+        [ConfigurationProperty("TokenKey", IsRequired = true)]
         public string TokenKey
         {
             get { return (string)this["TokenKey"]; }
@@ -108,7 +108,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
 
         [Category("Token Usage")]
         [ConfigurationProperty("TokenPrefix", IsRequired = false)]
-        [Description("A suffix to be added before the token when it is assigned to the token key in the main call, like 'Bearer '")]
+        [Description("A prefix to be added before the token when it is assigned to the token key in the main call, like 'Bearer '")]
         public string TokenPrefix
         {
             get { return (string)this["TokenPrefix"]; }
@@ -126,7 +126,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
 
         [Category("Token Usage")]
         [Description("Defines how to use the returned token for the main call.")]
-        [ConfigurationProperty("TokenUsage", IsRequired = false)]
+        [ConfigurationProperty("TokenUsage", IsRequired = true)]
         public TokenUsageEnum TokenUsage
         {
             get { return (TokenUsageEnum)this["TokenUsage"]; }
@@ -144,20 +144,20 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
         }
 
         [Category("Token Usage")]
-        [Description("TokenId is a unique identifier for the retrieved token, that allows to cache the token.")]        
+        [Description("TokenId is a unique identifier for the retrieved token, that allows to cache the token.")]
         [ConfigurationProperty("TokenId", IsRequired = false)]
         public Guid TokenId
         {
             get
             {
-                if (this["TokenId"] == null) this["TokenId"] = Guid.NewGuid();
+                if (this["TokenId"] == null || (Guid)this["TokenId"] == Guid.Empty) this["TokenId"] = Guid.NewGuid();
                 return (Guid)this["TokenId"];
             }
             set { this["TokenId"] = value; }
         }
         [Category("Token Usage")]
         [Description("The expiry period in seconds")]
-        [IntegerValidator(MinValue =1)]
+        [IntegerValidator(MinValue = 1)]
         [ConfigurationProperty("TokenExpiresIn", IsRequired = false, DefaultValue = 3300)]
         public int TokenExpiresIn
         {

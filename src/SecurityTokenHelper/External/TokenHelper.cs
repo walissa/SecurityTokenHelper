@@ -34,8 +34,16 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
             StringContent scontent = null;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             Uri uri = new Uri(url);
+            if (string.IsNullOrEmpty(tokenPath))
+            {
+                throw new ArgumentNullException("TokenPath cannot be null", "tokenPath");
+            }
             if (!string.IsNullOrEmpty(body))
             {
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    throw new ArgumentNullException("ContentType cannot be null or empty when Body is specified", "contentType");
+                }
                 scontent = new StringContent(body);
                 scontent.Headers.ContentType.MediaType = contentType;
             }
@@ -44,7 +52,10 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
             if (headers != null)
             {
                 foreach (var kv in headers)
-                    request.Headers.Add(kv.Key, kv.Value);
+                {
+                    if (kv.Key.ToLower() != "content-type")
+                        request.Headers.Add(kv.Key, kv.Value);
+                }
             }
             string retval = null, respContentType = null, respContent = "";
             try
@@ -85,14 +96,22 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
 
         public static string GetToken(HttpMethodEnum method, string url, HeaderCollection headers, string contentType, string body, string tokenPath, Guid tokenId, int tokenExpiresIn, bool cachedToken)
         {
+            if (!string.IsNullOrEmpty(body) & string.IsNullOrEmpty(contentType))
+            {
+                throw new ArgumentNullException("ContentType cannot be null or empty when Body is specified", "contentType");
+            }
+            if (string.IsNullOrEmpty(tokenPath))
+            {
+                throw new ArgumentNullException("TokenPath cannot be null", "tokenPath");
+            }
             string token = null;
             if (cachedToken)
             {
-                if (tokenExpiresIn<=0)
+                if (tokenExpiresIn <= 0)
                 {
                     throw new ArgumentException("tokenExpiresIn must have a value greater than zero.", "tokenExpiresIn");
                 }
-                if (tokenId==null || tokenId==Guid.Empty)
+                if (tokenId == null || tokenId == Guid.Empty)
                 {
                     throw new ArgumentException("Invalid tokenId", "tokenId");
                 }
@@ -119,5 +138,5 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
             }
             return token;
         }
-    } 
+    }
 }
