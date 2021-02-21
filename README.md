@@ -85,7 +85,7 @@ the extension must be added to both .Net framework versions (32 bit and 64 bit).
 
 locate behaviorExtensions section and add the following line
 ```
-<add name="SecurityTokenHelper" type="BizTalkComponents.WCFExtensions.SecuirtyTokenHelperElement, BizTalkComponents.WCFExtensions.SecurityTokenHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f8600b34c8012b7b" />
+<add name="SecurityTokenHelper" type="BizTalkComponents.WCFExtensions.SecurityTokenHelper.SecurityTokenHelperElement, BizTalkComponents.WCFExtensions.SecurityTokenHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f8600b34c8012b7b" />
 ```
 
 ### Adding the extension to BizTalk Host Instance
@@ -95,7 +95,7 @@ In BizTalk Administrator Console, go to Platform Settings --> Adapters  and sele
   <system.serviceModel>
     <extensions>
       <behaviorExtensions>
-          <add name="SecurityTokenHelper" type="BizTalkComponents.WCFExtensions.SecuirtyTokenHelperElement, BizTalkComponents.WCFExtensions.SecurityTokenHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f8600b34c8012b7b" />
+          <add name="SecurityTokenHelper" type="BizTalkComponents.WCFExtensions.SecurityTokenHelper.SecurityTokenHelperElement, BizTalkComponents.WCFExtensions.SecurityTokenHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f8600b34c8012b7b" />
       </behaviorExtensions>
     </extensions>
   </system.serviceModel>
