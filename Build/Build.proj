@@ -1,14 +1,15 @@
 <Project DefaultTargets="GenerateMsi" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath1)\BtsMsiTask\BtsMsiTask.targets" />
+  <Import Project="$(MSBuildExtensionsPath1)\BtsMsiTask\BtsMsiTask.targets" />
   <Import Project="$(MSBuildExtensionsPath1)\ExtensionPack\4.0\MSBuild.ExtensionPack.tasks"/>
-  
-	<PropertyGroup>
-		<DestinationPath>$(build_artifactstagingdirectory)</DestinationPath>
-		<ApplicationName>BizTalkComponents.WCFExtensions.SecurityTokenHelper</ApplicationName>
-	</PropertyGroup>
-	<ItemGroup>
-		<Resource Include="..\Src\SecurityTokenHelper\bin\$(Configuration)\BizTalkComponents.WCFExtensions.SecurityTokenHelper.dll" />
-	</ItemGroup>
+
+  <PropertyGroup>
+    <DestinationPath>$(build_artifactstagingdirectory)</DestinationPath>
+    <ApplicationName>BizTalkComponents.WCFExtensions.SecurityTokenHelper</ApplicationName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="..\Src\SecurityTokenHelper\bin\$(Configuration)\BizTalkComponents.WCFExtensions.SecurityTokenHelper.dll" />
+    <Resource Include="..\Src\SecurityTokenHelper\bin\$(Configuration)\Newtonsoft.Json.dll" />
+  </ItemGroup>
 
   <Target Name="GetVersion">
     <MSBuild.ExtensionPack.Framework.Assembly TaskAction="GetInfo" NetAssembly="..\Src\SecurityTokenHelper\bin\$(Configuration)\BizTalkComponents.WCFExtensions.SecurityTokenHelper.dll">
@@ -17,11 +18,11 @@
   </Target>
 
   <Target Name="GenerateMsi" DependsOnTargets="GetVersion">
-		<MsiTask
+    <MsiTask
 			FileName="BizTalkComponents.WCFExtensions.SecurityTokenHelper%(Info.AssemblyInformationalVersion).msi"
 			DestinationPath="$(DestinationPath)"
 			ApplicationName="$(ApplicationName)"
       SourceLocation="C:\%(Info.AssemblyInformationalVersion)"
 			Resources="@(Resource)" />
-	</Target>
+  </Target>
 </Project>
