@@ -27,7 +27,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
                 headers.Add(m.Groups["Header"].Value, m.Groups["Value"].Value);
                 m = m.NextMatch();
             }
-            return new SecurityTokenHelperBehavior(AuthEndpoint, HttpMethod, headers, ContentType, Body, TokenPath, TokenKey, TokenPrefix, TokenSuffix, TokenUsage, TokenId, CacheToken, TokenExpiresIn);
+            return new SecurityTokenHelperBehavior(AuthEndpoint, HttpMethod, headers, ContentType, Body, TokenPath, TokenKey, TokenPrefix, TokenSuffix, TokenUsage, TokenId, CacheToken, TokenExpiresIn, EnableLogging);
         }
 
         [Category("Auth Url Info")]
@@ -163,6 +163,14 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
         {
             get { return (int)this["TokenExpiresIn"]; }
             set { this["TokenExpiresIn"] = value; }
+        }
+        [Category("Token Usage")]
+        [Description("Enable or disable logging of token handling")]
+        [ConfigurationProperty("EnableLogging", IsRequired = false, DefaultValue = false)]
+        public bool EnableLogging
+        {
+            get { return (bool)this["EnableLogging"]; }
+            set { this["EnableLogging"] = value; }
         }
     }
 }
