@@ -30,11 +30,13 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
         public int TokenExpiresIn { get; set; }
 
         public TokenUsageEnum TokenUsage { get; set; }
+        // Added option to log
+        public bool enableLogging { get; set; }
 
         public SecurityTokenHelperBehavior(string authEndpoint, HttpMethodEnum method, HeaderCollection headers,
             string contentType, string body, string tokenPath,
             string tokenKey, string tokenPrefix, string tokenSuffix, TokenUsageEnum tokenUsage,
-            Guid tokenId, bool cacheToken, int tokenExpiresIn)
+            Guid tokenId, bool cacheToken, int tokenExpiresIn, bool enableLogging)
         {
             this.AuthEndpoint = authEndpoint;
             this.HttpMethod = method;
@@ -46,7 +48,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
             this.TokenPrefix = tokenPrefix;
             this.TokenSuffix = tokenSuffix;
             this.TokenUsage = tokenUsage;
-
+            this.enableLogging = enableLogging;
             this.CacheToken = cacheToken;
             this.TokenId = tokenId;
             this.TokenExpiresIn = tokenExpiresIn;
@@ -77,7 +79,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
                 };
                 request.Properties.Add(HttpRequestMessageProperty.Name, httpRequest);
             }
-            string token = TokenHelper.GetToken(HttpMethod, AuthEndpoint, Headers, ContentType, Body, TokenPath, TokenId, TokenExpiresIn, CacheToken);
+            string token = TokenHelper.GetToken(HttpMethod, AuthEndpoint, Headers, ContentType, Body, TokenPath, TokenId, TokenExpiresIn, CacheToken, enableLogging);
             if (!string.IsNullOrWhiteSpace(TokenPrefix)) token = TokenPrefix + token;
             if (!string.IsNullOrWhiteSpace(TokenSuffix)) token += TokenSuffix;
             if (TokenUsage == TokenUsageEnum.Header)

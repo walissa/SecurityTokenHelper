@@ -94,7 +94,7 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
             return retval;
         }
 
-        public static string GetToken(HttpMethodEnum method, string url, HeaderCollection headers, string contentType, string body, string tokenPath, Guid tokenId, int tokenExpiresIn, bool cachedToken)
+        public static string GetToken(HttpMethodEnum method, string url, HeaderCollection headers, string contentType, string body, string tokenPath, Guid tokenId, int tokenExpiresIn, bool cachedToken, bool enableLogging)
         {
             if (!string.IsNullOrEmpty(body) & string.IsNullOrEmpty(contentType))
             {
@@ -122,21 +122,28 @@ namespace BizTalkComponents.WCFExtensions.SecurityTokenHelper
                     {
                         token = GetToken(method, url, headers, contentType, body, tokenPath);
                         ti.SetTokenInfo(token, DateTime.Now);
-                        TokenDictionary.WriteLogMessage(message:$"Get new token for TokenId '{tokenId}'.",procName: "Cached Token");
+                        if(enableLogging)
+                            TokenDictionary.WriteLogMessage(message:$"Get new token for TokenId '{tokenId}'.",procName: "Cached Token");
                     }
                     else
                     {
                         token = ti.Token;
-                        TokenDictionary.WriteLogMessage(message: $"Get token for TokenId '{tokenId}' from cache.",procName: "Cached Token");
+                        if(enableLogging)
+                            TokenDictionary.WriteLogMessage(message: $"Get token for TokenId '{tokenId}' from cache.",procName: "Cached Token");
                     }
                 }
             }
             else
             {
                 token = GetToken(method, url, headers, contentType, body, tokenPath);
-                TokenDictionary.WriteLogMessage(message: $"Get new token", procName: "No Cache");
+                if(enableLogging)
+                    TokenDictionary.WriteLogMessage(message: $"Get new token", procName: "No Cache");
             }
             return token;
+        }
+        public static string GetToken(HttpMethodEnum method, string url, HeaderCollection headers, string contentType, string body, string tokenPath, Guid tokenId, int tokenExpiresIn, bool cachedToken)
+        {
+            return GetToken(method, url, headers, contentType, body, tokenPath, tokenId, tokenExpiresIn, cachedToken, true);
         }
     }
 }
