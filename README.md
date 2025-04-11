@@ -1,6 +1,5 @@
 # SecurityTokenHelper
-[![Build status](https://dev.azure.com/mytestings/Integrations/_apis/build/status/SecurityTokenHelper?branchName=main)](https://dev.azure.com/mytestings/Integrations/_build/latest?definitionId=30)
-
+[![Build status](https://waal.visualstudio.com/BizTalk%20Components/_apis/build/status/BizTalk%20Components/SecurityTokenHelper?branchName=main)](https://waal.visualstudio.com/BizTalk%20Components/_build/latest?definitionId=23)
 SecurityTokenHelper is a WCF endpoint behavior extension that helps authenticating calls in BizTalk, it also contains TokenHelper class that use to get token with without using WCF.
 
 ## TokenHelper Functions
